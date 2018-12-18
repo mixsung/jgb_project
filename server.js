@@ -98,6 +98,17 @@ var checkPermission = function (req, res, next){
   });
 };
 
+var convertDate = function(date){
+var convertdate = date;
+  var m = convertdate.getMonth()+1;
+	var d = convertdate.getDate();
+	var h = convertdate.getHours();
+	var i = convertdate.getMinutes();
+	var s = convertdate.getSeconds();
+  console.log(convertdate.getFullYear()+'-'+m+'-'+d+' '+h+':'+i+':'+s);
+	return convertdate.getFullYear()+'-'+(m>9?m:'0'+m)+'-'+(d>9?d:'0'+d)+' '+(h>9?h:'0'+h)+':'+(i>9?i:'0'+i)+':'+(s>9?s:'0'+s);
+};
+
 var upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
@@ -299,7 +310,8 @@ app.post('/information/:id/comments',isAuthenticated,function(req,res){
         writer : information.nickname,
         content : req.body.Comment,
         parentsGoods : req.params.id,
-        parentsComments : 'root'
+        parentsComments : 'root',
+        createdData : convertDate(date)
   });
 
   comment.save(comment,function (err,comment){
@@ -367,12 +379,13 @@ function connectDB(){
     }, {collection:'Members'});
     console.log('MembersSchema Define');
     
-     commentsSchema = new Schema({
+      commentsSchema = new Schema({
       writerID : {type:String, require:true},
       writer : {type:String, require:true},
       content : {type:String, require:true},
       parentsGoods : {type:String, require:true},
-      parentsComments : {type:String, require:true}
+      parentsComments : {type:String, require:true},
+      createdData : {type:String}
     },{collection:'Comments'});
     console.log('CommentsSchema Define');
 
