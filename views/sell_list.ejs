@@ -10,18 +10,20 @@
    <p class="text-muted">판매물품관리</p></p>
    </div>
    <div class="container">
-      <hr>
-      <li><a href="/information" bg-nclick="hmp*r.list" target="_blank" class="text_news">
-                         <img src="/public/resources/images/eximage.jpg" alt="판매2">
-                      </a>
-                      <span class="text_datetime">남은시간</span></li>
-      <li><a href="/information" bg-nclick="hmp*r.list" target="_blank" class="text_news">
-                         <img src="/public/resources/images/eximage.jpg" alt="판매1"></a></li>
-  <!--참고!!!!!!!!!!!! 링크 둘다 information ejs링크로 넣었으니 데이터베이스로 사용자가 올린 게시글의 링크로 수정하시던지 하세요.-->
-  
+
+     <% for(var i in info){%>
+       <hr>
+   	<li onclick="location.href='../information/<%=info[i]._id%>'" style='cursor:pointer; width:100%; height:20%; margin:10px'>
+      <img src=../<%= info[i].ImagePath %> style='max-width:10%; max-height:10%;'>
+      <span class="title"><%=info[i].title%></span>
+      <span class="datetime" style="float:right;">남은시간</span>
+    </li>
+   	<%}%>
+
+    </div>
   </div>
   </body>
   </html>
-  
+
   </body>
   </html>
