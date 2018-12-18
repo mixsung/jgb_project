@@ -12,7 +12,6 @@ var assert = require('assert');
 var multer = require('multer');
 var path = require('path');
 var async = require('async'); //
-//var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 var MongoStore = require('connect-mongo')(session);
 
@@ -27,12 +26,10 @@ app.use(session({
 app.set('view engine', 'ejs');
 
 passport.serializeUser(function(user,done){ //strategy 성공 시 호출
-//  console.log('serializeUser call');
   done(null,user._id); // user가 deserializeUser의 첫번째 매개변수로 전달
 });
 
 passport.deserializeUser(function(id,done){
-//  console.log('deserializeUser call');
   membersModel.findOne({'_id':id},function(err,user){
         done(err,user); // user가 req.uesr
   })
@@ -50,15 +47,11 @@ function(email, password, done){
             console.log('err');
       return done(err);}
     if(!user) {
-    //  req.flash("email", email);
             console.log('no users found');
-    //  return done(null, false, req.flash('loginError', 'no users found'));
     return done(null, false);
               }
     if(user.password != password) {
-    //  req.flash("email", email);
             console.log('password does not match');
-    //  return done(null, false, req.flash('loginError', 'password does not match'));
     return done(null, false);
     }
       console.log('return');
@@ -120,7 +113,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-//app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
 var Schema = mongoose.Schema;
@@ -129,7 +121,6 @@ var goodsSchema;
 var goodsModel;
 
 app.get('/index',isAuthenticated, function(req,res){
-//  console.log('login success');
   console.log('session value : '+ req.session.passport.user);
   goodsModel.find()
   .sort({'_id':-1})
@@ -147,15 +138,11 @@ app.get('/search',isAuthenticated, function(req,res){
 });
 
 app.get('/', function(req,res){
-//  res.render('login',{email:req.flash("email")[0], loginError:req.flash('loginerror')});
 res.render('login');
 });
 
 app.post('/', function(req,res,next){
-  //  req.flash("email");
   if(req.body.email.length==0 || req.body.password.length == 0){
-  //  req.flash("email", req.body.email);
-  //  req.flash("loginError","Please enter both email and password.");
     res.redirect('/login');
     console.log('length==0');
   }else{
@@ -165,7 +152,6 @@ app.post('/', function(req,res,next){
 }, passport.authenticate('local-login', {
   successRedirect : '/index',
   failureRedirect : '/'
-//  failureFlash : true
 })
 );
 
