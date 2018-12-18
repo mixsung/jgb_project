@@ -82,7 +82,7 @@ var isAuthenticated = function (req, res, next){
   return res.redirect('/');
 };
 
-var checkPermission = function (req, res, next){
+var checkPermission_Goods = function (req, res, next){
   console.log('id : '+req.params.id);
 
   goodsModel.findOne({'_id':req.params.id}).
@@ -90,6 +90,22 @@ var checkPermission = function (req, res, next){
     console.log('passport.user :'+req.session.passport.user);
     console.log('writer :'+information.writer);
     if(req.session.passport.user == information.writer){
+      console.log('권한 확인');
+      return  next();
+    }
+    console.log('권한 불허가');
+    return res.redirect('/index'); //이전화면으로 수정
+  });
+};
+
+var checkPermission_Comments = function (req, res, next){
+  console.log('id : '+req.params.comment);
+
+  commentsModel.findOne({'_id':req.params.comment}).
+  exec(function(err,information){
+    console.log('passport.user :'+req.session.passport.user);
+    console.log('writer :'+information.writerID);
+    if(req.session.passport.user == information.writerID){
       console.log('권한 확인');
       return  next();
     }
@@ -330,7 +346,18 @@ app.post('/information/:id/comments',isAuthenticated,function(req,res){
   });
 });
 
-app.get('/information/:id/delete',isAuthenticated, checkPermission, function(req,res){
+app.post('/information/:id/comments/delete/:comment',isAuthenticated, checkPermission_Comments, function(req,res){
+  console.log("start");
+  commentsModel.remove({_id:req.params.comment}, function(err){
+    console.log(req.params.comment);
+    console.log(req.params.id);
+    if(err)return console.error(err);
+    console.log("succeccfully deleted");
+    res.redirect('/information/'+req.params.id);
+  });
+});
+
+app.get('/information/:id/delete',isAuthenticated, checkPermission_Goods, function(req,res){
   res.render('remove_complete');
   goodsModel.remove({_id:req.params.id}, function(err){
     if(err)return console.error(err);
