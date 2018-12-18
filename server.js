@@ -273,7 +273,33 @@ app.get('/information/:id',isAuthenticated, function(req,res){
   goodsModel.findById(req.params.id,
     function(err, information){
     if(err) return res.json(err);
-    res.render('information' ,{info : information, user : req.session.passport.user });
+
+    commentsModel.find({'parentsGoods' : req.params.id})
+    .exec(function(err,comments){
+            res.render('information' ,{info : information, comments:comments, user : req.session.passport.user });
+    });
+  });
+});
+
+app.post('/information/:id/comments',isAuthenticated,function(req,res){
+  membersModel.findById(req.session.passport.user,
+    function(err,information){
+      if(err) return res.json(err);
+
+      var comment = new commentsModel({
+        writerID : req.session.passport.user,
+        writer : information.nickname,
+        content : req.body.Comment,
+        parentsGoods : req.params.id,
+        parentsComments : 'root'
+  });
+
+  comment.save(comment,function (err,comment){
+      if(err) return console.error(err);
+      console.log(comment.content + "save to Comments collection ");
+      res.redirect('/information/'+req.params.id);
+  });
+
   });
 });
 
@@ -332,9 +358,18 @@ function connectDB(){
       nickname : String
     }, {collection:'Members'});
     console.log('MembersSchema Define');
+    
+     commentsSchema = new Schema({
+      writerID : {type:String, require:true},
+      writer : {type:String, require:true},
+      content : {type:String, require:true},
+      parentsGoods : {type:String, require:true},
+      parentsComments : {type:String, require:true}
+    },{collection:'Comments'});
+    console.log('CommentsSchema Define');
 
     goodsModel = mongoose.model('Goods',goodsSchema);
     membersModel = mongoose.model('Members',membersSchema);
-    console.log('users define');
+    commentsModel = mongoose.model('Comments',commentsSchema);
   });
 }
