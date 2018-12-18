@@ -12,14 +12,14 @@
 
 <div class="cate">
 <div class="row">
-    <div class="col s12" id="cate_button">
-      <button type="button" class="btn btn-default"><a href="/book"><p class="text-muted">전공/교양서적</p></a></button>
+    <div class="col s12" id="cate_button"><!--최종수정본으로 카테고리수정-->
+      <button type="button" class="btn btn-default"><a class="white-text" href="/book">전공/교양서적</a></button>
     </div>
     <div class="col s12 m4 l2" id="cate_button">
-      <button type="button" class="btn btn-default"><a href="/variety"><p class="text-muted">전공/교양잡화</p></a></button>
+      <button type="button" class="btn btn-default"><a class="white-text" href="/variety">전공/교양잡화</a></button>
     </div>
     <div class="col s12 m4 l8" id="cate_button">
-      <button type="button" class="btn btn-default"><a href="/household"><p class="text-muted">생활용품</p></a></button>
+      <button type="button" class="btn btn-default"><a class="white-text" href="/household">생활용품</a></button>
     </div>
     <!-- <div class="col s12 m4 l2"><p>s12 m4</p></div> -->
   </div>
@@ -28,13 +28,13 @@
       <button type="button" class="btn btn-lg btn-primary" disabled="disabled">전자제품</button>
     </div>
     <div class="col s12 m6 l3" id="cate_button">
-      <button type="button" class="btn btn-default"><a href="/clothes"><p class="text-muted">의류</p></a></button>
+      <button type="button" class="btn btn-default"><a class="white-text" href="/clothes">의류</a></button>
     </div>
     <div class="col s12 m6 l3" id="cate_button">
-      <button type="button" class="btn btn-default"><a href="/hobby"><p class="text-muted">취미/오락</p></a></button>
+      <button type="button" class="btn btn-default"><a class="white-text" href="/hobby">취미/오락</a></button>
     </div>
     <div class="col s12 m6 l3" id="cate_button">
-      <button type="button" class="btn btn-default"><a href="/etc"><p class="text-muted">기타</p></a></button>
+      <button type="button" class="btn btn-default"><a class="white-text" href="/etc">기타</a></button>
     </div>
   </div>
   </div>
@@ -54,24 +54,17 @@
 	    </div>
 	</div>
 
-<nav>
-  <ul class="pagination">
-    <li>
-      <a href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li>
-      <a href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
+<!--페이지표시최종본으로수정-->
+<ul class="pagination">
+    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li><!--첫페이지에 있을 때만 적용-->
+    <li class="active"><a href="#!">1</a></li><!--현재페이지-->
+    <li class="waves-effect"><a href="#!">2</a></li>
+    <li class="waves-effect"><a href="#!">3</a></li>
+    <li class="waves-effect"><a href="#!">4</a></li>
+    <li class="waves-effect"><a href="#!">5</a></li>
+    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li><!--마지막페이지에 있을 때 disabled 적용할것-->
   </ul>
-</nav>
+  
+
 </body>
 </html>
