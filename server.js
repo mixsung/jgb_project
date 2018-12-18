@@ -192,11 +192,19 @@ app.get('/mypage',isAuthenticated, function(req,res){
 });
 
 app.get('/mypage/sell_list',isAuthenticated, function(req,res){
-  res.render('sell_list');
+  goodsModel.find({'writer':req.session.passport.user})
+  .sort({'_id':-1})
+  .exec(function(err,information){
+   res.render('sell_list', {info : information});
+  });
 });
 
 app.get('/mypage/buy_list',isAuthenticated, function(req,res){
-  res.render('bylist');
+commentsModel.find({'writerID':req.session.passport.user})
+  .sort({'_id':-1})
+  .exec(function(err,information){
+   res.render('buy_list', {info : information});
+  });
 });
 
 app.post('/register_complete', function(req,res){
