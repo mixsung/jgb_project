@@ -12,6 +12,7 @@ var assert = require('assert');
 var multer = require('multer');
 var path = require('path');
 var async = require('async'); //
+//var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 var MongoStore = require('connect-mongo')(session);
 
@@ -194,14 +195,23 @@ app.get('/write',isAuthenticated, function(req,res){
 });
 
 app.post('/write_complete',isAuthenticated, upload.single('Image'), function(req,res){
+
+  var date = new Date();
+
+  membersModel.findById(req.session.passport.user,
+    function(err,information){
+      if(err) return res.json(err);
+
   var goods = new goodsModel({
-  writer:req.session.passport.user,
+   writer:req.session.passport.user,
+   writer_nickname:information.nickname,
    title:req.body.Title,
    price:req.body.Price,
    content:req.body.Content,
    tag:req.body.Category,
    ImageName:req.file.filename,
-   ImagePath:"resources/images/"+req.file.filename
+   ImagePath:"resources/images/"+req.file.filename,
+   createdData : convertDate(date)
  });
 
  goods.save(goods, function (err,goods){
@@ -211,6 +221,9 @@ app.post('/write_complete',isAuthenticated, upload.single('Image'), function(req
  });
 
   console.log(req.file);
+
+});
+
 });
 
 app.get('/ask',isAuthenticated, function(req, res){
@@ -323,7 +336,11 @@ app.get('/information/:id',isAuthenticated, function(req,res){
   });
 });
 
-app.post('/information/:id/comments',isAuthenticated,function(req,res){
+app.post('/information/:id/comments',isAuthenticated,function(req,res)
+{
+
+  var date = new Date();
+
   membersModel.findById(req.session.passport.user,
     function(err,information){
       if(err) return res.json(err);
@@ -342,7 +359,6 @@ app.post('/information/:id/comments',isAuthenticated,function(req,res){
       console.log(comment.content + "save to Comments collection ");
       res.redirect('/information/'+req.params.id);
   });
-
   });
 });
 
@@ -396,24 +412,26 @@ function connectDB(){
     console.log('db connection');
 
     goodsSchema = new Schema({
-        writer : String,
-        title : String,
-        price : Number,
-        content : String,
-        tag : String,
-        ImagePath: String,
-        ImageName: String
+        writer : {type:String, require:true},
+        writer_nickname : {type:String, require:true},
+        title : {type:String, require:true},
+        price : {type:Number, require:true},
+        content : {type:String, require:true},
+        tag : {type:String, require:true},
+        ImagePath: {type:String, require:true},
+        ImageName: {type:String, require:true},
+        createdData : {type:String} //ggg
     }, {collection:'Goods'});
     console.log('GoodsSchema Define');
 
     membersSchema = new Schema({
       email : {type:String, require:true, unique:true},
-      password : String,
-      nickname : String
+      password : {type:String, require:true},
+      nickname : {type:String, require:true, unique:true}
     }, {collection:'Members'});
     console.log('MembersSchema Define');
-    
-      commentsSchema = new Schema({
+
+    commentsSchema = new Schema({
       writerID : {type:String, require:true},
       writer : {type:String, require:true},
       content : {type:String, require:true},
@@ -421,10 +439,12 @@ function connectDB(){
       parentsComments : {type:String, require:true},
       createdData : {type:String}
     },{collection:'Comments'});
+
     console.log('CommentsSchema Define');
 
     goodsModel = mongoose.model('Goods',goodsSchema);
     membersModel = mongoose.model('Members',membersSchema);
     commentsModel = mongoose.model('Comments',commentsSchema);
+
   });
 }
