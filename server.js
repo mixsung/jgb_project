@@ -201,8 +201,16 @@ app.get('/register', function(req,res){
   res.render('register');
 });
 
-app.get('/mypage', function(req,res){
+app.get('/mypage',isAuthenticated, function(req,res){
   res.render('mypage');
+});
+
+app.get('/mypage/sell_list',isAuthenticated, function(req,res){
+  res.render('sell_list');
+});
+
+app.get('/mypage/buy_list',isAuthenticated, function(req,res){
+  res.render('bylist');
 });
 
 app.post('/register_complete', function(req,res){
