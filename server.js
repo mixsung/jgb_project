@@ -166,6 +166,13 @@ app.post('/', function(req,res,next){
 })
 );
 
+app.get('/logout',isAuthenticated,function(req,res){
+  req.logout();
+  req.session.save(function(){
+    res.redirect('/');
+  })
+});
+
 app.get('/write',isAuthenticated, function(req,res){
   res.render('write');
 });
