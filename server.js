@@ -242,6 +242,10 @@ app.get('/register', function(req,res){
   res.render('register');
 });
 
+app.get('/notice',isAuthenticated, function(req, res){
+  res.render('notice');
+});
+
 app.get('/mypage',isAuthenticated, function(req,res){
   res.render('mypage');
 });
