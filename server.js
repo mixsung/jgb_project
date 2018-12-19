@@ -157,10 +157,6 @@ app.get('/index',isAuthenticated, function(req,res){
   });
 });
 
-app.get('/notice',isAuthenticated, function(req,res){
-  res.sendFile(__dirname+'/notice.html');
-});
-
 app.get('/search',isAuthenticated, function(req,res){
   res.render('search');
 });
