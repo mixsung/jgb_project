@@ -224,7 +224,7 @@ app.post('/write_complete',isAuthenticated, upload.single('Image'), function(req
  goods.save(goods, function (err,goods){
    if(err)return console.error(err);
    console.log(goods.title + " save to Goods collection ");
-   setTimeout(removeGoods,48*60*60*1000);
+   setTimeout(removeGoods,48*60*60*1000); //48*60*60초
    res.render('write_complete');
  });
 
