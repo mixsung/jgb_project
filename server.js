@@ -152,8 +152,9 @@ app.get('/index',isAuthenticated, function(req,res){
   console.log('session value : '+ req.session.passport.user);
   goodsModel.find()
   .sort({'_id':-1})
+  .limit(3)
   .exec(function(err,information){
-   res.render('index', {info : information});
+        res.render('index',{info:information});
   });
 });
 
