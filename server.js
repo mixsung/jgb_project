@@ -214,9 +214,17 @@ app.post('/write_complete',isAuthenticated, upload.single('Image'), function(req
    createdData : convertDate(date)
  });
 
+ function removeGoods(){
+   goodsModel.remove({_id:goods._id}, function(err){
+     console.log("등록 후 48시간이 경과하였습니다");
+     console.log("succeccfully deleted");
+   });
+ };	  
+	  
  goods.save(goods, function (err,goods){
    if(err)return console.error(err);
    console.log(goods.title + " save to Goods collection ");
+   setTimeout(removeGoods,48*60*60*1000);
    res.render('write_complete');
  });
 
