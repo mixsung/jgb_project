@@ -3,20 +3,22 @@
 	<% include layout.ejs %>
 </head>
 <body>
-
+	<div class="alert alert-scarlet" role="alert" onclick="location.href='notice'">
+	공지사항을 확인하세요!
+	</div>
 <div class="grid-example col s12 m6">
-    <div class="row align-items-center">
-		<div class="container" style='display:inline; width:85%; float:center;'>
+    <div class="row align-items-center">최근에 올라온 상품
+		<div class="container" style='display:inline; width:100%; float:center;'>
 <%for(var i in info){%>
-<div onclick="location.href='information/<%=info[i]._id%>'" style='cursor:pointer; width:40%; float:left; height:40%; margin:10px'>
-	<center><img src=<%= info[i].ImagePath %> style='max-width:80%; max-height:50%;'></center>
-	<p align="center"><%=info[i].tag%></p>
-	<p align="center"><%=info[i].title%></p>
-	<p align="center"><%=info[i].price%></p>
+<div onclick="location.href='information/<%=info[i]._id%>'" style='cursor:pointer; width:25%; float:left; height:20%; margin:10px'>
+	<div style='text-align:center;'><img src=<%= info[i].ImagePath %> style='max-width:80%; max-height:15%; text-align:center; vertical-align:top;'></div>
+	<div style='text-align:center;  width:100%;'><%=info[i].tag%></div><br>
+	<div style='text-align:center;  width:100%;'><%=info[i].title%></div>
+	<div style='text-align:center;  width:100%;'><%=info[i].price%></div>
 </div>
 <%}%>
 </div>
-    </div>
+</div>
 </div>
 </body>
 </html>
